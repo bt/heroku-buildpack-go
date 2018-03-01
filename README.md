@@ -1,10 +1,33 @@
-# Heroku Buildpack for Go
-
-[![travis ci](https://travis-ci.org/heroku/heroku-buildpack-go.svg?branch=master)](https://travis-ci.org/heroku/heroku-buildpack-go)
+# Heroku Buildpack for Go (with Git information)
 
 ![Heroku Buildpack for Go](https://cloud.githubusercontent.com/assets/51578/15877053/53506724-2cdf-11e6-878c-e2ef60ba741f.png)
 
-This is the official [Heroku buildpack][buildpack] for [Go][go].
+This is a forked [Heroku buildpack][buildpack] for [Go][go] adding capabilities to pass `ldflags` to the build.
+
+Basically, the following environment variables will be exported:
+
+| Environment Variable  | Description                            | Example              |
+| --------------------- | -------------------------------------- | -------------------- |
+| `GIT_COMMIT`          | The short SHA1 hash of the commit.     | 7dc674c              |
+| `GIT_BRANCH`          | The branch that's been deployed.       | master               |
+| `BUILD_TIME`          | The UTC time that the build commenced. | 2018-03-10T03:42:53Z |
+
+In addition to the above, you can also set the following config vars in Heroku, to allow `go build` to pass on to the build process.
+
+| Config Variable  | Description                                                         | Example                                 |
+| ---------------- | ------------------------------------------------------------------- | --------------------------------------- |
+| `VERSIONING_PKG` | The **full path** of the package containing versioning information. | github.com/bt/heroku-gitenv-test/appver |
+| `COMMIT_VAR`     | The name of the variable holding the commit hash.                   | Commit                                  |
+| `BRANCH_VAR`     | The name of the variable holding the name of the branch.            | Branch                                  |
+| `BUILD_TIME_VAR` | The name of the variable holding the build time.                    | BuildTime                               |
+
+With the above example, the following will be passed to `go build`:
+
+```
+go install -v -ldflags -X github.com/bt/heroku-gitenv-test/appver.Commit=7dc674c -X github.com/bt/heroku-gitenv-test/appver.Branch=master -X github.com/bt/heroku-gitenv-test/appver.BuildTime=2018-03-10T03:42:53Z ./...
+```
+
+You can either set these config vars in the Heroku dashboard or using `heroku config:set` with the CLI.
 
 ## Getting Started
 
