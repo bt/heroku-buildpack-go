@@ -176,10 +176,13 @@ loadEnvDir() {
     envFlags+=("GO_TEST_SKIP_BENCHMARK")
     envFlags+=("GLIDE_SKIP_INSTALL")
 
+    envFlags+=("VERSIONING_PKG")
+    envFlags+=("GIT_COMMIT")
+    envFlags+=("GIT_BRANCH")
+    envFlags+=("BUILD_TIME")
+    envFlags+=("COMMIT_VAR")
     envFlags+=("BRANCH_VAR")
     envFlags+=("BUILD_TIME_VAR")
-    envFlags+=("COMMIT_VAR")
-    envFlags+=("VERSIONING_PKG")
 
     local env_dir="${1}"
     if [ ! -z "${env_dir}" ]; then

@@ -380,11 +380,6 @@ mkdir -p "${build}/bin"
 FLAGS=(-tags heroku)
 
 # Determine git versions
-cd "${src}"
-GIT_COMMIT=`git describe --always --long --dirty`
-GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-BUILD_TIME=`TZ=Etc/UTC date '+%FT%TZ'`
-cd -
 FLAGS=(-ldflags "-X ${VERSIONING_PKG}.${COMMIT_VAR}=${GIT_COMMIT} -X ${VERSIONING_PKG}.${BRANCH_VAR}=${GIT_BRANCH} -X ${VERSIONING_PKG}.${BUILD_TIME_VAR}=${BUILD_TIME}")
 
 # If $GO_LINKER_SYMBOL and GO_LINKER_VALUE are set, tell the linker to DTRT
